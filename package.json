@@ -1,0 +1,32 @@
+{
+  "name": "miami-minesweeper",
+  "version": "1.0.0",
+  "description": "Minesweeper game",
+  "scripts": {
+    "start": "parcel ./src/index.html",
+    "build": "parcel build  ./src/index.html --public-url '/'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JanuaryLimes/miami-minesweeper.git"
+  },
+  "author": {
+    "name": "Kacper Śledź",
+    "email": "casper.sledx@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JanuaryLimes/miami-minesweeper/issues"
+  },
+  "homepage": "https://github.com/JanuaryLimes/miami-minesweeper#readme",
+  "dependencies": {
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.2",
+    "@types/react-dom": "^16.9.0",
+    "parcel": "^1.12.3",
+    "typescript": "^3.6.2"
+  }
+}
