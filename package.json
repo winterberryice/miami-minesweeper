@@ -19,6 +19,12 @@
     "url": "https://github.com/JanuaryLimes/miami-minesweeper/issues"
   },
   "homepage": "https://github.com/JanuaryLimes/miami-minesweeper#readme",
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
   "dependencies": {
     "react": "^16.9.0",
     "react-dom": "^16.9.0"
@@ -26,7 +32,11 @@
   "devDependencies": {
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.9.0",
+    "autoprefixer": "^9.6.1",
     "parcel": "^1.12.3",
+    "postcss": "^7.0.17",
+    "sass": "^1.23.0-module.beta.1",
+    "tailwindcss": "^1.1.2",
     "typescript": "^3.6.2"
   }
 }
