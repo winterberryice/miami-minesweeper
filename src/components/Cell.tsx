@@ -1,5 +1,6 @@
 import React from 'react';
-import { CellState } from './Board';
+import { CellState, CellStatus } from './Board';
+import { logger } from '../utils';
 
 const CELL_SIZE = '40px';
 
@@ -19,6 +20,24 @@ export default function Cell({
   // const { obj, bounds } = useMeasure<HTMLDivElement>();
 
   function render(): JSX.Element {
+    function getBackground(): string {
+      if (cellState.mine) {
+        return 'bg-red-500 hover:bg-red-600';
+      }
+      return 'bg-green-500 hover:bg-green-600';
+    }
+
+    function printStatus(): string {
+      if (cellState.mine) {
+        return '*';
+      }
+      if (cellState.status === CellStatus.flag) {
+        return 'f';
+      }
+
+      return '';
+    }
+
     return (
       <div
         // ref={obj.ref}
@@ -33,16 +52,16 @@ export default function Cell({
         }}
         className="relative "
       >
-        <div className="absolute inset-0 border-2 rounded overflow-hidden">
+        <div className="absolute inset-0 border-2 border-transparent rounded overflow-hidden">
           <button
             type="button"
-            className="hover:bg-green-600 h-full w-full"
+            className={[getBackground(), ' h-full w-full'].join(' ')}
             onClick={(): void => {
-              console.log('row: ', row, ' col: ', column);
+              logger('row: ', row, ' col: ', column);
               onClick(cellState);
             }}
           >
-            {`${row} ${column}`}
+            {printStatus()}
           </button>
         </div>
       </div>

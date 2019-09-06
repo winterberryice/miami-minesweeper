@@ -1,11 +1,9 @@
 import React from 'react';
 import Cell from './Cell';
+import { logger } from '../utils';
+import AppContext from '../store/AppContext';
 
-interface BoardProps {
-  size: number;
-}
-
-enum CellStatus {
+export enum CellStatus {
   default = 'default',
   flag = 'flag',
 }
@@ -15,45 +13,32 @@ export interface CellState {
   mine: boolean;
 }
 
-interface BoardState {
+export interface BoardState {
   cells: CellState[][];
+  size: number;
+  mines: number;
 }
 
-export default function Board({ size }: BoardProps): JSX.Element {
-  function getInitialState(boardSize: number): BoardState {
-    const cells: CellState[][] = [];
+export default function Board(): JSX.Element {
+  // use setState in new game button
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const [state, setState] = React.useState(getInitialState(size, mines));
+  const state = React.useContext(AppContext);
 
-    for (let row = 0; row < size; row += 1) {
-      cells[row] = [];
-      for (let column = 0; column < size; column += 1) {
-        cells[row][column] = {
-          status: CellStatus.default,
-          mine: false,
-        };
-      }
-    }
-
-    cells[3][7].mine = true;
-
-    console.log('cells', cells);
-
-    return { cells };
-  }
-
-  const [state, setState] = React.useState(getInitialState(size));
+  // console.log('store', appState);
 
   function getCellState(row: number, column: number): CellState {
     return state.cells[row][column];
   }
 
   function onCellClick(cellState: CellState): void {
-    console.log('status: ', cellState.status, ' mine: ', cellState.mine);
+    logger('status: ', cellState.status, ' mine: ', cellState.mine);
   }
 
   function render(): JSX.Element {
     const cells = [];
-    for (let row = 0; row < size; row += 1) {
-      for (let column = 0; column < size; column += 1) {
+    for (let row = 0; row < state.size; row += 1) {
+      for (let column = 0; column < state.size; column += 1) {
         const cellState = getCellState(row, column);
         cells.push(
           <Cell
@@ -68,7 +53,10 @@ export default function Board({ size }: BoardProps): JSX.Element {
     }
 
     return (
-      <div style={{ display: 'grid' }} className="mx-auto bg-green-400">
+      <div
+        style={{ display: 'grid' }}
+        className="mx-auto bg-green-400 rounded shadow"
+      >
         {cells}
       </div>
     );
