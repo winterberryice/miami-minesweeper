@@ -17,8 +17,6 @@ export default function Cell({
   cellState,
   onClick,
 }: CellProps): JSX.Element {
-  // const { obj, bounds } = useMeasure<HTMLDivElement>();
-
   function render(): JSX.Element {
     function getBackground(): string {
       if (cellState.mine) {
@@ -40,13 +38,11 @@ export default function Cell({
 
     return (
       <div
-        // ref={obj.ref}
         key={`${row}${column}`}
         style={{
           gridColumn: column + 1,
           gridRow: row + 1,
           alignSelf: 'stretch',
-          // height: bounds.width,
           height: CELL_SIZE,
           width: CELL_SIZE,
         }}
