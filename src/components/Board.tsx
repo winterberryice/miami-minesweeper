@@ -1,7 +1,8 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Cell from './Cell';
 import { logger } from '../utils';
-import AppContext from '../store/AppContext';
+import { getCells, getSize } from '../redux/selectors';
 
 export enum CellStatus {
   default = 'default',
@@ -20,15 +21,11 @@ export interface BoardState {
 }
 
 export default function Board(): JSX.Element {
-  // use setState in new game button
-  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const [state, setState] = React.useState(getInitialState(size, mines));
-  const state = React.useContext(AppContext);
-
-  // console.log('store', appState);
+  const cells = useSelector(getCells);
+  const size = useSelector(getSize);
 
   function getCellState(row: number, column: number): CellState {
-    return state.cells[row][column];
+    return cells[row][column];
   }
 
   function onCellClick(cellState: CellState): void {
@@ -36,11 +33,11 @@ export default function Board(): JSX.Element {
   }
 
   function render(): JSX.Element {
-    const cells = [];
-    for (let row = 0; row < state.size; row += 1) {
-      for (let column = 0; column < state.size; column += 1) {
+    const boardCells = [];
+    for (let row = 0; row < size; row += 1) {
+      for (let column = 0; column < size; column += 1) {
         const cellState = getCellState(row, column);
-        cells.push(
+        boardCells.push(
           <Cell
             key={`row${row}column${column}`}
             row={row}
@@ -57,7 +54,7 @@ export default function Board(): JSX.Element {
         style={{ display: 'grid' }}
         className="mx-auto bg-green-400 rounded shadow"
       >
-        {cells}
+        {boardCells}
       </div>
     );
   }
