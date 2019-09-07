@@ -9,6 +9,17 @@ import {
   CellState,
 } from '../../types';
 
+const PEERS = [
+  { row: -1, column: -1 },
+  { row: -1, column: 0 },
+  { row: -1, column: 1 },
+  { row: 0, column: 1 },
+  { row: 1, column: 1 },
+  { row: 1, column: 0 },
+  { row: 1, column: -1 },
+  { row: 0, column: -1 },
+];
+
 function getInitialState(boardSize: number, mines: number): BoardState {
   const cells: CellState[][] = [];
 
@@ -51,22 +62,11 @@ function getInitialState(boardSize: number, mines: number): BoardState {
       }
     },
     fillProximityMines: (): void => {
-      const peers = [
-        { row: -1, column: -1 },
-        { row: -1, column: 0 },
-        { row: -1, column: 1 },
-        { row: 0, column: 1 },
-        { row: 1, column: 1 },
-        { row: 1, column: 0 },
-        { row: 1, column: -1 },
-        { row: 0, column: -1 },
-      ];
-
       for (let row = 0; row < boardSize; row += 1) {
         for (let column = 0; column < boardSize; column += 1) {
           let proximityMines = 0;
 
-          peers.forEach(peer => {
+          PEERS.forEach(peer => {
             if (
               cells[row + peer.row] &&
               cells[row + peer.row][column + peer.column] &&
@@ -94,9 +94,27 @@ const initialState = getInitialState(10, 10);
 logger('initial state', initialState);
 
 function cellClickAction(draft: BoardState, payload: CellProps): void {
-  draft.cells[payload.row][payload.column].status = CellStatus.open;
+  function click(row: number, column: number): void {
+    const cell = draft.cells[row][column];
 
-  // TODO auto click proximity 0 cells
+    if (cell.status !== CellStatus.default) {
+      return;
+    }
+
+    cell.status = CellStatus.open;
+
+    if (cell.proximityMines === 0)
+      PEERS.forEach(peer => {
+        if (
+          draft.cells[row + peer.row] &&
+          draft.cells[row + peer.row][column + peer.column]
+        ) {
+          click(row + peer.row, column + peer.column);
+        }
+      });
+  }
+
+  click(payload.row, payload.column);
 }
 
 const rootReducer = (state = initialState, action: Action): BoardState =>
