@@ -1,22 +1,24 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { CellState, CellStatus } from './Board';
 import { logger } from '../utils';
+import { cellClick } from '../redux/actions';
 
 const CELL_SIZE = '40px';
 
-interface CellProps {
+export interface CellProps {
   row: number;
   column: number;
   cellState: CellState;
-  onClick: (cellState: CellState) => void;
 }
 
 export default function Cell({
   row,
   column,
   cellState,
-  onClick,
 }: CellProps): JSX.Element {
+  const dispatch = useDispatch();
+
   function render(): JSX.Element {
     function getBackground(): string {
       if (cellState.mine) {
@@ -26,14 +28,20 @@ export default function Cell({
     }
 
     function printStatus(): string {
-      if (cellState.mine) {
-        return '*';
+      if (cellState.status === CellStatus.default) {
+        return '';
+      }
+      if (
+        cellState.status === CellStatus.clear &&
+        cellState.proximityMines > 0
+      ) {
+        return cellState.proximityMines.toString();
       }
       if (cellState.status === CellStatus.flag) {
         return 'f';
       }
 
-      return cellState.proximityMines.toString();
+      return '';
     }
 
     return (
@@ -53,8 +61,22 @@ export default function Cell({
             type="button"
             className={[getBackground(), ' h-full w-full'].join(' ')}
             onClick={(): void => {
-              logger('row: ', row, ' col: ', column);
-              onClick(cellState);
+              logger(
+                'row: ',
+                row,
+                ' col: ',
+                column,
+                ' cell state: ',
+                cellState,
+              );
+              dispatch(
+                cellClick({
+                  row,
+                  column,
+                  cellState,
+                }),
+              );
+              // onClick(cellState);
             }}
           >
             {printStatus()}

@@ -1,6 +1,14 @@
-import { NEW_GAME } from '../actionTypes';
+import produce from 'immer';
+import { NEW_GAME, CELL_CLICK } from '../actionTypes';
 import { BoardState, CellState, CellStatus } from '../../components/Board';
 import { logger } from '../../utils';
+import { CellProps } from '../../components/Cell';
+
+export interface Action {
+  type: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  payload?: any;
+}
 
 function getInitialState(boardSize: number, mines: number): BoardState {
   const cells: CellState[][] = [];
@@ -86,17 +94,24 @@ const initialState = getInitialState(10, 10);
 
 logger('initial state', initialState);
 
-export interface Action {
-  type: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  payload?: any;
+function cellClickAction(draft: BoardState, payload: CellProps): void {
+  draft.cells[payload.row][payload.column].status = CellStatus.clear;
 }
 
-export default function(state = initialState, action: Action): BoardState {
-  switch (action.type) {
-    case NEW_GAME:
-      return { ...getInitialState(10, 10) };
-    default:
-      return state;
-  }
-}
+const rootReducer = (state = initialState, action: Action): BoardState =>
+  produce(
+    state,
+    (draft): BoardState => {
+      switch (action.type) {
+        case NEW_GAME:
+          return { ...getInitialState(10, 10) };
+        case CELL_CLICK:
+          cellClickAction(draft, action.payload as CellProps);
+          return draft;
+        default:
+          return draft;
+      }
+    },
+  );
+
+export default rootReducer;

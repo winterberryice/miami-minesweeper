@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import Cell from './Cell';
-import { logger } from '../utils';
 import { getCells, getSize } from '../redux/selectors';
 
 export enum CellStatus {
@@ -30,10 +29,6 @@ export default function Board(): JSX.Element {
     return cells[row][column];
   }
 
-  function onCellClick(cellState: CellState): void {
-    logger('status: ', cellState.status, ' mine: ', cellState.mine);
-  }
-
   function render(): JSX.Element {
     const boardCells = [];
     for (let row = 0; row < size; row += 1) {
@@ -45,7 +40,6 @@ export default function Board(): JSX.Element {
             row={row}
             column={column}
             cellState={cellState}
-            onClick={onCellClick}
           />,
         );
       }

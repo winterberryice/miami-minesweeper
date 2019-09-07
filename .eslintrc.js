@@ -18,6 +18,10 @@ module.exports = {
     },
   },
   rules: {
+    'no-param-reassign': [
+      'error',
+      { props: true, ignorePropertyModificationsFor: ['draft'] },
+    ],
     'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.jsx'] }],
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",

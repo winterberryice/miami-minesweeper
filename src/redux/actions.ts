@@ -1,7 +1,12 @@
-import { NEW_GAME } from './actionTypes';
+import { NEW_GAME, CELL_CLICK } from './actionTypes';
 import { Action } from './reducers/rootReducer';
+import { CellProps } from '../components/Cell';
 
-// eslint-disable-next-line import/prefer-default-export
 export const newGame = (): Action => ({
   type: NEW_GAME,
+});
+
+export const cellClick = (cellState: CellProps): Action => ({
+  type: CELL_CLICK,
+  payload: cellState,
 });
