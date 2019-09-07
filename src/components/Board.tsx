@@ -6,12 +6,14 @@ import { getCells, getSize } from '../redux/selectors';
 
 export enum CellStatus {
   default = 'default',
+  clear = 'clear',
   flag = 'flag',
 }
 
 export interface CellState {
   status: CellStatus;
   mine: boolean;
+  proximityMines: number;
 }
 
 export interface BoardState {

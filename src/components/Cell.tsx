@@ -33,7 +33,7 @@ export default function Cell({
         return 'f';
       }
 
-      return '';
+      return cellState.proximityMines.toString();
     }
 
     return (

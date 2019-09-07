@@ -5,46 +5,79 @@ import { logger } from '../../utils';
 function getInitialState(boardSize: number, mines: number): BoardState {
   const cells: CellState[][] = [];
 
-  function fillCells(): void {
-    for (let row = 0; row < boardSize; row += 1) {
-      cells[row] = [];
-      for (let column = 0; column < boardSize; column += 1) {
-        cells[row][column] = {
-          status: CellStatus.default,
-          mine: false,
-        };
+  const stateBuilder = {
+    fillCells: (): void => {
+      for (let row = 0; row < boardSize; row += 1) {
+        cells[row] = [];
+        for (let column = 0; column < boardSize; column += 1) {
+          cells[row][column] = {
+            status: CellStatus.default,
+            mine: false,
+            proximityMines: 0,
+          };
+        }
       }
-    }
-  }
+    },
+    fillMines: (): void => {
+      function getNonMinedCell(): CellState {
+        function getRandomCell(): CellState {
+          const row = Math.floor(Math.random() * cells.length);
+          const column = Math.floor(Math.random() * cells[row].length);
+          return cells[row][column];
+        }
 
-  function getRandomCell(): CellState {
-    const row = Math.floor(Math.random() * cells.length);
-    const column = Math.floor(Math.random() * cells[row].length);
-    return cells[row][column];
-  }
+        let cell = getRandomCell();
+        let counter = 0;
 
-  function getNonMinedCell(): CellState {
-    let cell = getRandomCell();
-    let counter = 0;
+        while (cell.mine) {
+          cell = getRandomCell();
+          counter += 1;
+        }
 
-    while (cell.mine) {
-      cell = getRandomCell();
-      counter += 1;
-    }
+        logger('iterations: ', counter);
 
-    logger('iterations: ', counter);
+        return cell;
+      }
 
-    return cell;
-  }
+      for (let i = 0; i < mines; i += 1) {
+        getNonMinedCell().mine = true;
+      }
+    },
+    fillProximityMines: (): void => {
+      const peers = [
+        { row: -1, column: -1 },
+        { row: -1, column: 0 },
+        { row: -1, column: 1 },
+        { row: 0, column: 1 },
+        { row: 1, column: 1 },
+        { row: 1, column: 0 },
+        { row: 1, column: -1 },
+        { row: 0, column: -1 },
+      ];
 
-  function randomizeCells(): void {
-    for (let i = 0; i < mines; i += 1) {
-      getNonMinedCell().mine = true;
-    }
-  }
+      for (let row = 0; row < boardSize; row += 1) {
+        for (let column = 0; column < boardSize; column += 1) {
+          let proximityMines = 0;
 
-  fillCells();
-  randomizeCells();
+          peers.forEach(peer => {
+            if (
+              cells[row + peer.row] &&
+              cells[row + peer.row][column + peer.column] &&
+              cells[row + peer.row][column + peer.column].mine
+            ) {
+              proximityMines += 1;
+            }
+          });
+
+          cells[row][column].proximityMines = proximityMines;
+        }
+      }
+    },
+  };
+
+  stateBuilder.fillCells();
+  stateBuilder.fillMines();
+  stateBuilder.fillProximityMines();
 
   return { cells, mines, size: boardSize };
 }
