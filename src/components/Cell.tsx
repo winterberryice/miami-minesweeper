@@ -15,10 +15,13 @@ export default function Cell({
 
   function render(): JSX.Element {
     function getBackground(): string {
-      if (cellState.mine) {
-        return 'bg-red-500 hover:bg-red-600';
+      if (cellState.status === CellStatus.open && cellState.mine) {
+        return 'bg-red-500 ';
       }
-      return 'bg-green-500 hover:bg-green-600';
+      if (cellState.status === CellStatus.default) {
+        return 'bg-green-500 hover:bg-green-600';
+      }
+      return 'border-2 border-green-500';
     }
 
     function printStatus(): string {
@@ -26,7 +29,7 @@ export default function Cell({
         return '';
       }
       if (
-        cellState.status === CellStatus.clear &&
+        cellState.status === CellStatus.open &&
         cellState.proximityMines > 0
       ) {
         return cellState.proximityMines.toString();
@@ -53,7 +56,11 @@ export default function Cell({
         <div className="absolute inset-0 border-2 border-transparent rounded overflow-hidden">
           <button
             type="button"
-            className={[getBackground(), ' h-full w-full'].join(' ')}
+            className={[
+              getBackground(),
+              'h-full w-full',
+              'outline-none focus:outline-none',
+            ].join(' ')}
             onClick={(): void => {
               logger(
                 'row: ',

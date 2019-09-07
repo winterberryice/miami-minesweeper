@@ -94,7 +94,9 @@ const initialState = getInitialState(10, 10);
 logger('initial state', initialState);
 
 function cellClickAction(draft: BoardState, payload: CellProps): void {
-  draft.cells[payload.row][payload.column].status = CellStatus.clear;
+  draft.cells[payload.row][payload.column].status = CellStatus.open;
+
+  // TODO auto click proximity 0 cells
 }
 
 const rootReducer = (state = initialState, action: Action): BoardState =>

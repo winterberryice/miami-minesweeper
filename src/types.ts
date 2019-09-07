@@ -6,9 +6,9 @@ export interface Action {
   payload?: any;
 }
 
-export enum CellStatus {
+export const enum CellStatus {
   default = 'default',
-  clear = 'clear',
+  open = 'open',
   flag = 'flag',
 }
 
