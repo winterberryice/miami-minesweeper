@@ -1,14 +1,13 @@
 import produce from 'immer';
 import { NEW_GAME, CELL_CLICK } from '../actionTypes';
-import { BoardState, CellState, CellStatus } from '../../components/Board';
 import { logger } from '../../utils';
-import { CellProps } from '../../components/Cell';
-
-export interface Action {
-  type: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  payload?: any;
-}
+import {
+  Action,
+  BoardState,
+  CellProps,
+  CellStatus,
+  CellState,
+} from '../../types';
 
 function getInitialState(boardSize: number, mines: number): BoardState {
   const cells: CellState[][] = [];

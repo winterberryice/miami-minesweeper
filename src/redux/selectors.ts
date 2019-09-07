@@ -1,4 +1,4 @@
-import { BoardState, CellState } from '../components/Board';
+import { BoardState, CellState } from '../types';
 
 export const getCells = (store: BoardState): CellState[][] => {
   return store.cells;

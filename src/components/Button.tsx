@@ -1,9 +1,5 @@
 import React from 'react';
-
-interface ButtonProps {
-  children?: React.ReactNode;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-}
+import { ButtonProps } from '../types';
 
 export default function Button({
   children,

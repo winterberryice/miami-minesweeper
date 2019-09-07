@@ -1,16 +1,10 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { CellState, CellStatus } from './Board';
 import { logger } from '../utils';
 import { cellClick } from '../redux/actions';
+import { CellProps, CellStatus } from '../types';
 
 const CELL_SIZE = '40px';
-
-export interface CellProps {
-  row: number;
-  column: number;
-  cellState: CellState;
-}
 
 export default function Cell({
   row,

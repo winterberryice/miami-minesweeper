@@ -2,24 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import Cell from './Cell';
 import { getCells, getSize } from '../redux/selectors';
-
-export enum CellStatus {
-  default = 'default',
-  clear = 'clear',
-  flag = 'flag',
-}
-
-export interface CellState {
-  status: CellStatus;
-  mine: boolean;
-  proximityMines: number;
-}
-
-export interface BoardState {
-  cells: CellState[][];
-  size: number;
-  mines: number;
-}
+import { CellState } from '../types';
 
 export default function Board(): JSX.Element {
   const cells = useSelector(getCells);

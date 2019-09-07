@@ -1,6 +1,5 @@
 import { NEW_GAME, CELL_CLICK } from './actionTypes';
-import { Action } from './reducers/rootReducer';
-import { CellProps } from '../components/Cell';
+import { CellProps, Action } from '../types';
 
 export const newGame = (): Action => ({
   type: NEW_GAME,
