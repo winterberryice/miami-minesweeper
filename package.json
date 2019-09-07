@@ -4,7 +4,7 @@
   "description": "Minesweeper game",
   "main": "src/index.tsx",
   "scripts": {
-    "dev": "npm run type-check:watch & npm run start",
+    "dev": "concurrently -r 'npm:type-check:watch' 'npm:start'",
     "start": "parcel ./src/index.html --open",
     "build": "npm run type-check && npm run parcel-build",
     "parcel-build": "parcel build  ./src/index.html --public-url . --out-dir dist",
@@ -44,6 +44,7 @@
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
     "autoprefixer": "^9.6.1",
+    "concurrently": "^4.1.2",
     "eslint": "^6.2.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.1.0",
