@@ -2,9 +2,14 @@
   "name": "miami-minesweeper",
   "version": "1.0.0",
   "description": "Minesweeper game",
+  "main": "src/index.tsx",
   "scripts": {
+    "dev": "npm run type-check:watch & npm run start",
     "start": "parcel ./src/index.html --open",
-    "build": "parcel build  ./src/index.html --public-url . --out-dir dist"
+    "build": "npm run type-check && npm run parcel-build",
+    "parcel-build": "parcel build  ./src/index.html --public-url . --out-dir dist",
+    "type-check": "tsc --noEmit --skipLibCheck",
+    "type-check:watch": "tsc --noEmit --watch --skipLibCheck"
   },
   "repository": {
     "type": "git",
