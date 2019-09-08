@@ -28,22 +28,31 @@ function FlagIndicator(): JSX.Element {
   );
 }
 
-function Main(): JSX.Element {
+function Header(): JSX.Element {
   const dispatch = useDispatch();
 
   return (
-    <div className="p-2">
-      <div className="flex justify-center items-center py-2">
+    <div className="flex justify-center items-center p-2">
+      <div className="flex-1">
         <FlagIndicator />
-        <Button
-          onClick={(): void => {
-            dispatch(newGame());
-          }}
-        >
-          New game
-        </Button>
       </div>
-      <div className="flex">
+      <Button
+        onClick={(): void => {
+          dispatch(newGame());
+        }}
+      >
+        New game
+      </Button>
+      <div className="flex-1" />
+    </div>
+  );
+}
+
+function Main(): JSX.Element {
+  return (
+    <div className="p-2 flex flex-col">
+      <div className="flex flex-col mx-auto">
+        <Header />
         <Board />
       </div>
     </div>

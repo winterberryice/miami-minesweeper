@@ -5,8 +5,6 @@ import { cellClick, flagClick } from '../redux/actions';
 import { CellProps, CellStatus } from '../types';
 import Flag from './icons/Flag';
 
-const CELL_SIZE = '40px';
-
 export default function Cell({
   row,
   column,
@@ -56,10 +54,8 @@ export default function Cell({
           gridColumn: column + 1,
           gridRow: row + 1,
           alignSelf: 'stretch',
-          height: CELL_SIZE,
-          width: CELL_SIZE,
         }}
-        className="relative "
+        className="relative cell-size"
       >
         <div
           className="absolute inset-0 border-2 

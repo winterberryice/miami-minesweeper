@@ -29,10 +29,7 @@ export default function Board(): JSX.Element {
     }
 
     return (
-      <div
-        style={{ display: 'grid' }}
-        className="mx-auto bg-green-400 rounded shadow"
-      >
+      <div style={{ display: 'grid' }} className="bg-green-400 rounded shadow">
         {boardCells}
       </div>
     );
