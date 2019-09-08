@@ -6,6 +6,7 @@ import store from '../redux/store';
 import { newGame } from '../redux/actions';
 import { getRemainingFlags } from '../redux/selectors';
 import Flag from './icons/Flag';
+import Timer from './icons/Timer';
 
 export default function App(): JSX.Element {
   return (
@@ -28,6 +29,19 @@ function FlagIndicator(): JSX.Element {
   );
 }
 
+function TimerIndicator(): JSX.Element {
+  const remainingFlags = useSelector(getRemainingFlags);
+
+  return (
+    <div className="flex justify-end">
+      <div style={{ height: '20px', width: '20px' }}>
+        <Timer />
+      </div>
+      <div className="pl-2">{remainingFlags}</div>
+    </div>
+  );
+}
+
 function Header(): JSX.Element {
   const dispatch = useDispatch();
 
@@ -43,7 +57,9 @@ function Header(): JSX.Element {
       >
         New game
       </Button>
-      <div className="flex-1" />
+      <div className="flex-1">
+        <TimerIndicator />
+      </div>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Flag(): JSX.Element {
   return (
-    <svg viewBox="0 0 496.485 496.485" height="100%">
+    <svg viewBox="0 0 496.485 496.485">
       <path
         fill="#e95353"
         d="M440.537 284.905H237.428V90.469h203.109l-31.744 97.218z"
