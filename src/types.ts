@@ -22,12 +22,18 @@ export interface BoardState {
   cells: CellState[][];
   size: number;
   mines: number;
+  remainingFlags: number;
 }
 
 export interface CellProps {
   row: number;
   column: number;
   cellState: CellState;
+}
+
+export interface CellCoords {
+  row: number;
+  column: number;
 }
 
 export interface ButtonProps {

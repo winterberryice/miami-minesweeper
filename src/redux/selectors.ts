@@ -7,3 +7,7 @@ export const getCells = (store: BoardState): CellState[][] => {
 export const getSize = (store: BoardState): number => {
   return store.size;
 };
+
+export const getRemainingFlags = (store: BoardState): number => {
+  return store.remainingFlags;
+};

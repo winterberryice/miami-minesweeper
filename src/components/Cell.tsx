@@ -1,8 +1,9 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { logger } from '../utils';
-import { cellClick } from '../redux/actions';
+import { cellClick, flagClick } from '../redux/actions';
 import { CellProps, CellStatus } from '../types';
+import Flag from './icons/flag';
 
 const CELL_SIZE = '40px';
 
@@ -18,13 +19,16 @@ export default function Cell({
       if (cellState.status === CellStatus.open && cellState.mine) {
         return 'bg-red-500 ';
       }
-      if (cellState.status === CellStatus.default) {
+      if (
+        cellState.status === CellStatus.default ||
+        cellState.status === CellStatus.flag
+      ) {
         return 'bg-green-500 hover:bg-green-600';
       }
       return 'border-2 border-green-500';
     }
 
-    function printStatus(): string {
+    function printStatus(): string | JSX.Element {
       if (cellState.status === CellStatus.default) {
         return '';
       }
@@ -35,7 +39,11 @@ export default function Cell({
         return cellState.proximityMines.toString();
       }
       if (cellState.status === CellStatus.flag) {
-        return 'f';
+        return (
+          <div style={{ height: '20px', width: '20px' }}>
+            <Flag />
+          </div>
+        );
       }
 
       return '';
@@ -53,14 +61,22 @@ export default function Cell({
         }}
         className="relative "
       >
-        <div className="absolute inset-0 border-2 border-transparent rounded overflow-hidden">
+        <div
+          className="absolute inset-0 border-2 
+        border-transparent rounded overflow-hidden"
+        >
           <button
             type="button"
             className={[
               getBackground(),
               'h-full w-full',
               'outline-none focus:outline-none',
+              'flex items-center justify-center',
             ].join(' ')}
+            onContextMenu={(e): void => {
+              e.preventDefault();
+              dispatch(flagClick({ row, column }));
+            }}
             onClick={(): void => {
               logger(
                 'row: ',
@@ -74,10 +90,8 @@ export default function Cell({
                 cellClick({
                   row,
                   column,
-                  cellState,
                 }),
               );
-              // onClick(cellState);
             }}
           >
             {printStatus()}

@@ -7,7 +7,8 @@ export default function Button({
 }: ButtonProps): JSX.Element {
   return (
     <button
-      className="rounded bg-blue-700 hover:bg-blue-800 py-1 px-2"
+      className="rounded bg-blue-700 
+      hover:bg-blue-800 py-1 px-2 focus:outline-none"
       type="button"
       onClick={(e): void => {
         if (onClick) {

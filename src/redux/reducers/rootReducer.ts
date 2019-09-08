@@ -1,5 +1,5 @@
 import produce from 'immer';
-import { NEW_GAME, CELL_CLICK } from '../actionTypes';
+import { NEW_GAME, CELL_CLICK, FLAG_CLICK } from '../actionTypes';
 import { logger } from '../../utils';
 import {
   Action,
@@ -7,6 +7,7 @@ import {
   CellProps,
   CellStatus,
   CellState,
+  CellCoords,
 } from '../../types';
 
 const PEERS = [
@@ -86,35 +87,51 @@ function getInitialState(boardSize: number, mines: number): BoardState {
   stateBuilder.fillMines();
   stateBuilder.fillProximityMines();
 
-  return { cells, mines, size: boardSize };
+  return {
+    cells,
+    mines,
+    size: boardSize,
+    remainingFlags: mines,
+  };
 }
 
 const initialState = getInitialState(10, 10);
 
 logger('initial state', initialState);
 
-function cellClickAction(draft: BoardState, payload: CellProps): void {
-  function click(row: number, column: number): void {
-    const cell = draft.cells[row][column];
+function cellClickAction(draft: BoardState, { row, column }: CellCoords): void {
+  const cell = draft.cells[row][column];
 
-    if (cell.status !== CellStatus.default) {
-      return;
-    }
-
-    cell.status = CellStatus.open;
-
-    if (cell.proximityMines === 0)
-      PEERS.forEach(peer => {
-        if (
-          draft.cells[row + peer.row] &&
-          draft.cells[row + peer.row][column + peer.column]
-        ) {
-          click(row + peer.row, column + peer.column);
-        }
-      });
+  if (cell.status !== CellStatus.default) {
+    return;
   }
 
-  click(payload.row, payload.column);
+  cell.status = CellStatus.open;
+
+  if (cell.proximityMines === 0)
+    PEERS.forEach(peer => {
+      if (
+        draft.cells[row + peer.row] &&
+        draft.cells[row + peer.row][column + peer.column]
+      ) {
+        cellClickAction(draft, {
+          row: row + peer.row,
+          column: column + peer.column,
+        });
+      }
+    });
+}
+
+function flagClickAction(draft: BoardState, { row, column }: CellCoords): void {
+  const cell = draft.cells[row][column];
+
+  if (cell.status === CellStatus.default) {
+    cell.status = CellStatus.flag;
+    draft.remainingFlags -= 1;
+  } else if (cell.status === CellStatus.flag) {
+    cell.status = CellStatus.default;
+    draft.remainingFlags += 1;
+  }
 }
 
 const rootReducer = (state = initialState, action: Action): BoardState =>
@@ -125,7 +142,10 @@ const rootReducer = (state = initialState, action: Action): BoardState =>
         case NEW_GAME:
           return { ...getInitialState(10, 10) };
         case CELL_CLICK:
-          cellClickAction(draft, action.payload as CellProps);
+          cellClickAction(draft, action.payload as CellCoords);
+          return draft;
+        case FLAG_CLICK:
+          flagClickAction(draft, action.payload as CellCoords);
           return draft;
         default:
           return draft;
