@@ -5,7 +5,7 @@ import Button from './Button';
 import store from '../redux/store';
 import { newGame } from '../redux/actions';
 import { getRemainingFlags } from '../redux/selectors';
-import Flag from './icons/flag';
+import Flag from './icons/Flag';
 
 export default function App(): JSX.Element {
   return (

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { logger } from '../utils';
 import { cellClick, flagClick } from '../redux/actions';
 import { CellProps, CellStatus } from '../types';
-import Flag from './icons/flag';
+import Flag from './icons/Flag';
 
 const CELL_SIZE = '40px';
 
