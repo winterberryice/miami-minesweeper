@@ -23,12 +23,15 @@ export interface BoardState {
   size: number;
   mines: number;
   remainingFlags: number;
+  elapsedSeconds: number;
+  moves: number;
 }
 
 export interface CellProps {
   row: number;
   column: number;
   cellState: CellState;
+  onClick: () => void;
 }
 
 export interface CellCoords {
@@ -39,4 +42,9 @@ export interface CellCoords {
 export interface ButtonProps {
   children?: React.ReactNode;
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}
+
+export interface IntervalState {
+  delay: number | null;
+  timerStarted: boolean;
 }

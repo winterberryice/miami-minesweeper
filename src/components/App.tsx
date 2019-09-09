@@ -4,7 +4,7 @@ import Board from './Board';
 import Button from './Button';
 import store from '../redux/store';
 import { newGame } from '../redux/actions';
-import { getRemainingFlags } from '../redux/selectors';
+import { getRemainingFlags, getElapsedSeconds } from '../redux/selectors';
 import Flag from './icons/Flag';
 import Timer from './icons/Timer';
 
@@ -30,14 +30,14 @@ function FlagIndicator(): JSX.Element {
 }
 
 function TimerIndicator(): JSX.Element {
-  const remainingFlags = useSelector(getRemainingFlags);
+  const elapsedTime = useSelector(getElapsedSeconds);
 
   return (
     <div className="flex justify-end">
       <div style={{ height: '20px', width: '20px' }}>
         <Timer />
       </div>
-      <div className="pl-2">{remainingFlags}</div>
+      <div className="pl-2">{elapsedTime}</div>
     </div>
   );
 }

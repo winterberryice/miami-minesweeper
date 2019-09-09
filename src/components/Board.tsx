@@ -1,12 +1,44 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Cell from './Cell';
-import { getCells, getSize } from '../redux/selectors';
-import { CellState } from '../types';
+import { getCells, getSize, getMovesCount } from '../redux/selectors';
+import { CellState, IntervalState } from '../types';
+import useInterval from '../hooks/useInterval';
+import { incrementElapsedSeconds } from '../redux/actions';
 
 export default function Board(): JSX.Element {
   const cells = useSelector(getCells);
   const size = useSelector(getSize);
+  const moves = useSelector(getMovesCount);
+  const dispatch = useDispatch();
+  const [intervalState, setIntervalState] = React.useState<IntervalState>({
+    delay: null,
+    timerStarted: false,
+  });
+
+  useInterval((): void => {
+    dispatch(incrementElapsedSeconds(1));
+  }, intervalState.delay);
+
+  React.useEffect(() => {
+    if (moves === 0) {
+      // 'listen' to new game event,
+      // clear interval etc.
+      setIntervalState({
+        delay: null,
+        timerStarted: false,
+      });
+    }
+  }, [moves]);
+
+  function cellClick(): void {
+    if (!intervalState.timerStarted) {
+      setIntervalState({
+        delay: 1000,
+        timerStarted: true,
+      });
+    }
+  }
 
   function getCellState(row: number, column: number): CellState {
     return cells[row][column];
@@ -23,6 +55,7 @@ export default function Board(): JSX.Element {
             row={row}
             column={column}
             cellState={cellState}
+            onClick={cellClick}
           />,
         );
       }

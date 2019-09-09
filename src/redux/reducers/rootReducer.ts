@@ -1,10 +1,14 @@
 import produce from 'immer';
-import { NEW_GAME, CELL_CLICK, FLAG_CLICK } from '../actionTypes';
+import {
+  NEW_GAME,
+  CELL_CLICK,
+  FLAG_CLICK,
+  INCREMENT_ELAPSED_SECONDS,
+} from '../actionTypes';
 import { logger } from '../../utils';
 import {
   Action,
   BoardState,
-  CellProps,
   CellStatus,
   CellState,
   CellCoords,
@@ -92,6 +96,8 @@ function getInitialState(boardSize: number, mines: number): BoardState {
     mines,
     size: boardSize,
     remainingFlags: mines,
+    elapsedSeconds: 0,
+    moves: 0,
   };
 }
 
@@ -107,6 +113,7 @@ function cellClickAction(draft: BoardState, { row, column }: CellCoords): void {
   }
 
   cell.status = CellStatus.open;
+  draft.moves += 1;
 
   if (cell.proximityMines === 0)
     PEERS.forEach(peer => {
@@ -146,6 +153,9 @@ const rootReducer = (state = initialState, action: Action): BoardState =>
           return draft;
         case FLAG_CLICK:
           flagClickAction(draft, action.payload as CellCoords);
+          return draft;
+        case INCREMENT_ELAPSED_SECONDS:
+          draft.elapsedSeconds += action.payload as number;
           return draft;
         default:
           return draft;

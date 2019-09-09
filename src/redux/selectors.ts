@@ -11,3 +11,11 @@ export const getSize = (store: BoardState): number => {
 export const getRemainingFlags = (store: BoardState): number => {
   return store.remainingFlags;
 };
+
+export const getElapsedSeconds = (store: BoardState): number => {
+  return store.elapsedSeconds;
+};
+
+export const getMovesCount = (store: BoardState): number => {
+  return store.moves;
+};

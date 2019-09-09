@@ -9,6 +9,7 @@ export default function Cell({
   row,
   column,
   cellState,
+  onClick,
 }: CellProps): JSX.Element {
   const dispatch = useDispatch();
 
@@ -74,6 +75,9 @@ export default function Cell({
               dispatch(flagClick({ row, column }));
             }}
             onClick={(): void => {
+              if (onClick) {
+                onClick();
+              }
               logger(
                 'row: ',
                 row,
