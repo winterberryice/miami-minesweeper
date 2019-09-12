@@ -27,7 +27,7 @@ export default function Board(): JSX.Element {
   }, intervalState.delay);
 
   React.useEffect(() => {
-    if (moves === 0) {
+    if (moves === 0 || isGameOver) {
       // 'listen' to new game event,
       // clear interval etc.
       setIntervalState({
@@ -35,7 +35,7 @@ export default function Board(): JSX.Element {
         timerStarted: false,
       });
     }
-  }, [moves]);
+  }, [moves, isGameOver]);
 
   function cellClick(): void {
     if (!intervalState.timerStarted) {
