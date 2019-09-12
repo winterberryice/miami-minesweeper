@@ -19,3 +19,7 @@ export const getElapsedSeconds = (store: BoardState): number => {
 export const getMovesCount = (store: BoardState): number => {
   return store.moves;
 };
+
+export const getIsGameOver = (store: BoardState): boolean => {
+  return store.gameOver;
+};

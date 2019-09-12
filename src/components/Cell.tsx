@@ -4,6 +4,7 @@ import { logger } from '../utils';
 import { cellClick, flagClick } from '../redux/actions';
 import { CellProps, CellStatus } from '../types';
 import Flag from './icons/Flag';
+import Bomb from './icons/Bomb';
 
 export default function Cell({
   row,
@@ -28,6 +29,13 @@ export default function Cell({
     }
 
     function printStatus(): string | JSX.Element {
+      if (cellState.status === CellStatus.open && cellState.mine) {
+        return (
+          <div style={{ height: '20px', width: '20px' }}>
+            <Bomb />
+          </div>
+        );
+      }
       if (cellState.status === CellStatus.default) {
         return '';
       }

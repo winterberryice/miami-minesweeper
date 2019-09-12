@@ -25,6 +25,7 @@ export interface BoardState {
   remainingFlags: number;
   elapsedSeconds: number;
   moves: number;
+  gameOver: boolean;
 }
 
 export interface CellProps {

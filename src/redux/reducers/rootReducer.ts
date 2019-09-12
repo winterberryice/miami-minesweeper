@@ -98,6 +98,7 @@ function getInitialState(boardSize: number, mines: number): BoardState {
     remainingFlags: mines,
     elapsedSeconds: 0,
     moves: 0,
+    gameOver: false,
   };
 }
 
@@ -105,10 +106,27 @@ const initialState = getInitialState(10, 10);
 
 logger('initial state', initialState);
 
+function revealAllMines(draft: BoardState): void {
+  draft.cells.forEach(row => {
+    row.forEach(cell => {
+      if (cell.mine) {
+        const aCell = cell;
+        aCell.status = CellStatus.open;
+      }
+    });
+  });
+}
+
 function cellClickAction(draft: BoardState, { row, column }: CellCoords): void {
   const cell = draft.cells[row][column];
 
   if (cell.status !== CellStatus.default) {
+    return;
+  }
+  if (cell.mine) {
+    logger('game over');
+    revealAllMines(draft);
+    draft.gameOver = true;
     return;
   }
 

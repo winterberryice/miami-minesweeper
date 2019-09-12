@@ -1,7 +1,12 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Cell from './Cell';
-import { getCells, getSize, getMovesCount } from '../redux/selectors';
+import {
+  getCells,
+  getSize,
+  getMovesCount,
+  getIsGameOver,
+} from '../redux/selectors';
 import { CellState, IntervalState } from '../types';
 import useInterval from '../hooks/useInterval';
 import { incrementElapsedSeconds } from '../redux/actions';
@@ -10,6 +15,7 @@ export default function Board(): JSX.Element {
   const cells = useSelector(getCells);
   const size = useSelector(getSize);
   const moves = useSelector(getMovesCount);
+  const isGameOver = useSelector(getIsGameOver);
   const dispatch = useDispatch();
   const [intervalState, setIntervalState] = React.useState<IntervalState>({
     delay: null,
@@ -62,8 +68,17 @@ export default function Board(): JSX.Element {
     }
 
     return (
-      <div style={{ display: 'grid' }} className="bg-green-400 rounded shadow">
-        {boardCells}
+      <div className="board-element relative">
+        <div
+          style={{ display: 'grid' }}
+          className="bg-green-400 rounded shadow"
+        >
+          {boardCells}
+        </div>
+
+        {isGameOver && (
+          <div className="game-over-overlay absolute rounded inset-0" />
+        )}
       </div>
     );
   }
