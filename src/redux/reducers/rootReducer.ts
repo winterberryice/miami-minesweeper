@@ -96,9 +96,13 @@ function getInitialState(boardSize: number, mines: number): BoardState {
     mines,
     size: boardSize,
     remainingFlags: mines,
+    remainingCells: boardSize * boardSize - mines,
     elapsedSeconds: 0,
     moves: 0,
-    gameOver: false,
+    gameOverInfo: {
+      gameOver: false,
+      status: '',
+    },
   };
 }
 
@@ -134,12 +138,25 @@ function cellClickAction(draft: BoardState, { row, column }: CellCoords): void {
     logger('game over');
     revealAllMinesOnGameOver(draft);
     cell.status = CellStatus.gameEndingCell;
-    draft.gameOver = true;
+    draft.gameOverInfo = {
+      gameOver: true,
+      status: 'lose',
+    };
     return;
   }
 
   cell.status = CellStatus.open;
   draft.moves += 1;
+  draft.remainingCells -= 1;
+
+  if (draft.remainingCells < 1) {
+    logger('game over: win');
+    draft.gameOverInfo = {
+      gameOver: true,
+      status: 'win',
+    };
+    return;
+  }
 
   if (cell.proximityMines === 0)
     PEERS.forEach(peer => {

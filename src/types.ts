@@ -25,9 +25,15 @@ export interface BoardState {
   size: number;
   mines: number;
   remainingFlags: number;
+  remainingCells: number;
   elapsedSeconds: number;
   moves: number;
+  gameOverInfo: GameOverInfo;
+}
+
+export interface GameOverInfo {
   gameOver: boolean;
+  status: '' | 'win' | 'lose';
 }
 
 export interface CellProps {

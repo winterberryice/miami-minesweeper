@@ -8,6 +8,7 @@ import {
   getRemainingFlags,
   getElapsedSeconds,
   getIsGameOver,
+  getGameOverStatus,
 } from '../redux/selectors';
 import Flag from './icons/Flag';
 import Timer from './icons/Timer';
@@ -49,10 +50,13 @@ function TimerIndicator(): JSX.Element {
 function Header(): JSX.Element {
   const dispatch = useDispatch();
   const isGameOver = useSelector(getIsGameOver);
+  const gameOverStatus = useSelector(getGameOverStatus);
 
   function contentEmoji(): string {
-    if (isGameOver) {
+    if (isGameOver && gameOverStatus == 'lose') {
       return '😢';
+    } else if (isGameOver && gameOverStatus == 'win') {
+      return '😎';
     } else {
       return '😃';
     }

@@ -21,5 +21,9 @@ export const getMovesCount = (store: BoardState): number => {
 };
 
 export const getIsGameOver = (store: BoardState): boolean => {
-  return store.gameOver;
+  return store.gameOverInfo.gameOver;
+};
+
+export const getGameOverStatus = (store: BoardState): '' | 'win' | 'lose' => {
+  return store.gameOverInfo.status;
 };
