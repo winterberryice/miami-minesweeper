@@ -4,7 +4,11 @@ import Board from './Board';
 import Button from './Button';
 import store from '../redux/store';
 import { newGame } from '../redux/actions';
-import { getRemainingFlags, getElapsedSeconds } from '../redux/selectors';
+import {
+  getRemainingFlags,
+  getElapsedSeconds,
+  getIsGameOver,
+} from '../redux/selectors';
 import Flag from './icons/Flag';
 import Timer from './icons/Timer';
 
@@ -44,19 +48,32 @@ function TimerIndicator(): JSX.Element {
 
 function Header(): JSX.Element {
   const dispatch = useDispatch();
+  const isGameOver = useSelector(getIsGameOver);
+
+  function contentEmoji(): string {
+    if (isGameOver) {
+      return '😢';
+    } else {
+      return '😃';
+    }
+  }
 
   return (
     <div className="header-element flex justify-center items-center p-2">
       <div className="flex-1">
         <FlagIndicator />
       </div>
-      <Button
+
+      <button
+        className="rounded hover:bg-gray-700 leading-normal py-1 px-2"
+        type="button"
         onClick={(): void => {
           dispatch(newGame());
         }}
       >
-        New game
-      </Button>
+        {contentEmoji()}
+      </button>
+
       <div className="flex-1">
         <TimerIndicator />
       </div>
