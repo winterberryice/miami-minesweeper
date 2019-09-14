@@ -10,6 +10,8 @@ export const enum CellStatus {
   default = 'default',
   open = 'open',
   flag = 'flag',
+  wrongFlag = 'wrongFlag',
+  gameEndingCell = 'gameEndingCell',
 }
 
 export interface CellState {

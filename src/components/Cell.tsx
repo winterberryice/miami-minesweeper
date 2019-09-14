@@ -1,10 +1,12 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logger } from '../utils';
 import { cellClick, flagClick } from '../redux/actions';
 import { CellProps, CellStatus } from '../types';
 import Flag from './icons/Flag';
 import Bomb from './icons/Bomb';
+import { getIsGameOver } from '../redux/selectors';
+import Cancel from './icons/Cancel';
 
 export default function Cell({
   row,
@@ -13,15 +15,18 @@ export default function Cell({
   onClick,
 }: CellProps): JSX.Element {
   const dispatch = useDispatch();
+  const isGameOver = useSelector(getIsGameOver);
 
   function render(): JSX.Element {
     function getBackground(): string {
-      if (cellState.status === CellStatus.open && cellState.mine) {
+      if (cellState.status === CellStatus.gameEndingCell) {
         return 'bg-red-500 ';
       }
       if (
         cellState.status === CellStatus.default ||
-        cellState.status === CellStatus.flag
+        cellState.status === CellStatus.flag ||
+        cellState.status === CellStatus.wrongFlag ||
+        (cellState.status === CellStatus.open && cellState.mine)
       ) {
         return 'bg-green-500 hover:bg-green-600';
       }
@@ -29,7 +34,10 @@ export default function Cell({
     }
 
     function printStatus(): string | JSX.Element {
-      if (cellState.status === CellStatus.open && cellState.mine) {
+      if (
+        (cellState.status === CellStatus.open && cellState.mine) ||
+        cellState.status === CellStatus.gameEndingCell
+      ) {
         return (
           <div style={{ height: '20px', width: '20px' }}>
             <Bomb />
@@ -52,6 +60,21 @@ export default function Cell({
           </div>
         );
       }
+      if (cellState.status == CellStatus.wrongFlag) {
+        return (
+          <div className="relative">
+            <div style={{ height: '20px', width: '20px' }}>
+              <Flag />
+            </div>
+            <div
+              className="absolute inset-0"
+              style={{ height: '20px', width: '20px' }}
+            >
+              <Cancel />
+            </div>
+          </div>
+        );
+      }
 
       return '';
     }
@@ -71,6 +94,7 @@ export default function Cell({
         border-transparent rounded overflow-hidden"
         >
           <button
+            disabled={isGameOver}
             type="button"
             className={[
               getBackground(),
