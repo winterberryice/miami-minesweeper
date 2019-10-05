@@ -18,3 +18,29 @@ body {
   height: 40px;
   width: 40px;
 }
+
+.title-font {
+  font-family: 'Permanent Marker', cursive;
+
+  background: linear-gradient(
+    172deg,
+    #ab70fe 0%,
+    #fd9fe7 30%,
+    #a506e4 31%,
+    #fb79dd 39%,
+    #f93bd6 48%,
+    #580ba5 49%,
+    #fc8cd5 57%,
+    #fda7f5 65%,
+    #b34adc 66%,
+    #f19be8 73%,
+    #ed73dc 75%,
+    #af4ae4 77%,
+    #aa5fdc 83%,
+    #fb6dfb 84%,
+    #7b016d 100%
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

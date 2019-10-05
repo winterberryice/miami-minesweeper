@@ -85,10 +85,20 @@ function Header(): JSX.Element {
   );
 }
 
+function Title(): JSX.Element {
+  return (
+    <div className="title-element title-font text-5xl">
+      <div className="flex justify-center">Miami</div>
+      <div className="flex justify-center">Minesweeper</div>
+    </div>
+  );
+}
+
 function Main(): JSX.Element {
   return (
     <div className="main-app-element p-2 flex flex-col">
       <div className="flex flex-col mx-auto">
+        <Title />
         <Header />
         <Board />
       </div>
