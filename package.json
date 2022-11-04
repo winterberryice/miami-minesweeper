@@ -1,63 +1,24 @@
 {
   "name": "miami-minesweeper",
-  "version": "1.0.0",
-  "description": "Minesweeper game",
-  "main": "src/index.tsx",
+  "version": "2.0.0-SNAPSHOT",
+  "private": true,
   "scripts": {
-    "dev": "concurrently -r 'npm:type-check:watch' 'npm:start'",
-    "start": "parcel ./src/index.html --open",
-    "build": "npm run type-check && npm run parcel-build",
-    "parcel-build": "parcel build  ./src/index.html --public-url . --out-dir dist",
-    "type-check": "tsc --noEmit --skipLibCheck",
-    "type-check:watch": "tsc --noEmit --watch --skipLibCheck"
+    "dev": "next dev",
+    "build": "next build && next export",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/JanuaryLimes/miami-minesweeper.git"
-  },
-  "author": {
-    "name": "Kacper Śledź",
-    "email": "casper.sledx@gmail.com"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/JanuaryLimes/miami-minesweeper/issues"
-  },
-  "homepage": "https://github.com/JanuaryLimes/miami-minesweeper#readme",
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ],
   "dependencies": {
-    "immer": "^3.2.0",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-redux": "^7.1.1",
-    "redux": "^4.0.4",
-    "resize-observer-polyfill": "^1.5.1"
+    "eslint": "8.26.0",
+    "eslint-config-next": "13.0.2",
+    "next": "13.0.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "4.8.4"
   },
   "devDependencies": {
-    "@types/react": "^16.9.2",
-    "@types/react-dom": "^16.9.0",
-    "@types/react-redux": "^7.1.2",
-    "@typescript-eslint/eslint-plugin": "^2.0.0",
-    "@typescript-eslint/parser": "^2.0.0",
-    "autoprefixer": "^9.6.1",
-    "concurrently": "^4.1.2",
-    "eslint": "^6.2.0",
-    "eslint-config-airbnb": "^18.0.1",
-    "eslint-config-prettier": "^6.1.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-prettier": "^3.1.0",
-    "eslint-plugin-react": "^7.14.3",
-    "parcel": "^1.12.3",
-    "postcss": "^7.0.17",
-    "prettier": "^1.18.2",
-    "sass": "^1.23.0-module.beta.1",
-    "tailwindcss": "^1.1.2",
-    "typescript": "^3.6.2"
+    "@types/node": "18.11.9",
+    "@types/react": "18.0.25",
+    "@types/react-dom": "18.0.8"
   }
 }
