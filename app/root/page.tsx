@@ -1,28 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-
-const RootContext = React.createContext<
-  | {
-      counter: number;
-      increment: () => void;
-    }
-  | undefined
->(undefined);
-
-function RootContextProvider({ children }: { children: React.ReactNode }) {
-  const [counter, setCounter] = useState(0);
-
-  function increment() {
-    setCounter((prev) => prev + 1);
-  }
-
-  return (
-    <RootContext.Provider value={{ counter, increment }}>
-      {children}
-    </RootContext.Provider>
-  );
-}
+import React from "react";
+import { RootContext } from "./Provider";
 
 function InnerPage() {
   const context = React.useContext(RootContext);
@@ -42,11 +21,6 @@ function InnerPage() {
   );
 }
 
-//TODO context do layout?
 export default function Page() {
-  return (
-    <RootContextProvider>
-      <InnerPage />
-    </RootContextProvider>
-  );
+  return <InnerPage />;
 }

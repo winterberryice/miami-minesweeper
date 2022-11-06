@@ -2,7 +2,7 @@
 
 import React from "react";
 
-const RootContext = React.createContext<
+const LeafContext = React.createContext<
   | {
       counter: number;
       increment: () => void;
@@ -10,7 +10,7 @@ const RootContext = React.createContext<
   | undefined
 >(undefined);
 
-function RootContextProvider({
+function LeafContextProvider({
   children,
   label,
 }: {
@@ -31,10 +31,10 @@ function RootContextProvider({
   }, [label]);
 
   return (
-    <RootContext.Provider value={{ counter, increment }}>
+    <LeafContext.Provider value={{ counter, increment }}>
       {children}
-    </RootContext.Provider>
+    </LeafContext.Provider>
   );
 }
 
-export { RootContextProvider, RootContext };
+export { LeafContextProvider, LeafContext };
