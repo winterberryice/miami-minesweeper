@@ -26,8 +26,6 @@ export default function RootLayout({
       <body>
         <div>
           <Link href={"/"}>Home</Link>
-          <Link href={"/root"}>Root</Link>
-          <Link href={"/root/leaf"}>Leaf</Link>
         </div>
         {children}
       </body>
