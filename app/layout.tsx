@@ -1,4 +1,3 @@
-import Link from "next/link";
 import React from "react";
 import "../styles/globals.css";
 
@@ -24,12 +23,7 @@ export default function RootLayout({
 
         <title>Miami minesweeper</title>
       </head>
-      <body>
-        <div>
-          <Link href={"/"}>Home</Link>
-        </div>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
