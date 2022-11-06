@@ -8,6 +8,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* TODO learn about fonts in next.js */}
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link
           href="https://fonts.googleapis.com/css?family=Permanent+Marker&display=swap"
