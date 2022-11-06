@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 export default function RootLayout({
@@ -22,7 +23,14 @@ export default function RootLayout({
 
         <title>Miami minesweeper</title>
       </head>
-      <body>{children}</body>
+      <body>
+        <div>
+          <Link href={"/"}>Home</Link>
+          <Link href={"/root"}>Root</Link>
+          <Link href={"/root/leaf"}>Leaf</Link>
+        </div>
+        {children}
+      </body>
     </html>
   );
 }
