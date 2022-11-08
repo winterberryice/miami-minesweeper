@@ -1,3 +1,5 @@
+"use client";
+
 import { Board, Header, Title } from "app/components";
 
 export default function Page() {
