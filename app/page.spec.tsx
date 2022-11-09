@@ -5,6 +5,8 @@ import Page from "./page";
 describe("Page", () => {
   it("should have title", () => {
     render(<Page />);
-    expect(screen.findByText(/miami minesweeper/i)).toBeInTheDocument();
+
+    expect(screen.getByText(/miami/i)).toBeInTheDocument();
+    expect(screen.getByText(/minesweeper/i)).toBeInTheDocument();
   });
 });
