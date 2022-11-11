@@ -1,3 +1,8 @@
+export type Coordinates = {
+  row: number;
+  column: number;
+};
+
 export enum Status {
   DEFAULT = "DEFAULT",
   OPEN = "OPEN",
