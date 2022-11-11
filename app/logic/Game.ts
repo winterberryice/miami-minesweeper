@@ -1,39 +1,23 @@
 import React from "react";
 
-type Params = {
-  boardSize: number;
-  mines: number;
-};
+type Cell = { row: number; column: number };
+type Board = Cell[][];
 
-export class Game {
-  private boardSize: number;
-  private mines: number;
-
-  constructor({ boardSize, mines }: Params) {
-    this.boardSize = boardSize;
-    this.mines = mines;
-  }
-
-  start() {}
+export interface IBoardCreator {
+  createBoard(boardSize: number): Board;
 }
 
-type Cell = { row: number; column: number };
+type UseGameProps = {
+  boardSize: number;
+  boardCreator: IBoardCreator;
+};
 
-export function useGame(boardSize: number) {
-  const [board, setBoard] = React.useState<Cell[][]>([]);
+export function useGame({ boardCreator, boardSize }: UseGameProps) {
+  const [board, setBoard] = React.useState<Board>([]);
 
   React.useEffect(() => {
-    let newBoard: Cell[][] = [];
-
-    for (let i = 0; i < boardSize; i++) {
-      newBoard[i] = [];
-      for (let j = 0; j < boardSize; j++) {
-        newBoard[i][j] = { row: i, column: j };
-      }
-    }
-
-    setBoard(newBoard);
-  }, [boardSize]);
+    setBoard(boardCreator.createBoard(boardSize));
+  }, [boardCreator, boardSize]);
 
   return {
     board,
