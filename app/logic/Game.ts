@@ -1,26 +1,21 @@
 import React from "react";
-
-type Cell = { row: number; column: number };
-type Board = Cell[][];
-
-export interface IBoardCreator {
-  createBoard(boardSize: number): Board;
-}
+import { Board, Cell, IBoardCreator, Status } from "./types";
 
 export type UseGameProps = {
   boardSize: number;
+  mines: number;
   boardCreator: IBoardCreator;
 };
 
-export function useGame({ boardCreator, boardSize }: UseGameProps) {
+export function useGame({ boardCreator, boardSize, mines }: UseGameProps) {
   const [board, setBoard] = React.useState<Board>([]);
 
   React.useEffect(() => {
-    setBoard(boardCreator.createBoard(boardSize));
-  }, [boardCreator, boardSize]);
+    setBoard(boardCreator.createBoard(boardSize, mines));
+  }, [boardCreator, boardSize, mines]);
 
   function start() {
-    setBoard(boardCreator.createBoard(boardSize));
+    setBoard(boardCreator.createBoard(boardSize, mines));
   }
 
   function onCellClick() {}
@@ -32,4 +27,84 @@ export function useGame({ boardCreator, boardSize }: UseGameProps) {
     onCellClick,
     onFlagClick,
   };
+}
+
+const PEERS = [
+  { row: -1, column: -1 },
+  { row: -1, column: 0 },
+  { row: -1, column: 1 },
+  { row: 0, column: 1 },
+  { row: 1, column: 1 },
+  { row: 1, column: 0 },
+  { row: 1, column: -1 },
+  { row: 0, column: -1 },
+];
+
+class GameBoardCreator implements IBoardCreator {
+  public createBoard(boardSize: number, mines: number): Board {
+    const board: Board = [];
+
+    fillCells();
+    fillMines();
+    fillProximityMines();
+
+    return board;
+
+    function fillCells() {
+      for (let row = 0; row < boardSize; row++) {
+        board[row] = [];
+        for (let column = 0; column < boardSize; column++) {
+          board[row][column] = {
+            row,
+            column,
+            status: Status.DEFAULT,
+            mine: false,
+            proximityMines: 0,
+          };
+        }
+      }
+    }
+
+    function fillMines() {
+      function getNonMinedCell(): Cell {
+        function getRandomCell(): Cell {
+          const row = Math.floor(Math.random() * board.length);
+          const column = Math.floor(Math.random() * board[row].length);
+          return board[row][column];
+        }
+
+        let cell = getRandomCell();
+
+        while (cell.mine) {
+          cell = getRandomCell();
+        }
+
+        return cell;
+      }
+
+      for (let i = 0; i < mines; i += 1) {
+        getNonMinedCell().mine = true;
+      }
+    }
+
+    function fillProximityMines() {
+      for (let row = 0; row < boardSize; row += 1) {
+        for (let column = 0; column < boardSize; column += 1) {
+          let proximityMines = 0;
+
+          PEERS.forEach((peer) => {
+            if (
+              board[row + peer.row] &&
+              board[row + peer.row][column + peer.column] &&
+              board[row + peer.row][column + peer.column].mine
+            ) {
+              proximityMines += 1;
+            }
+          });
+
+          board[row][column].proximityMines = proximityMines;
+        }
+      }
+    }
+  }
 }
