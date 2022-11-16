@@ -17,7 +17,7 @@ describe("Game", () => {
   });
 
   test(`click on cell with proximity mines 0 should open any neighboring cells,
-  if neighbor cell is proximity 0 then open recursively`, () => {
+      if neighbor cell is proximity 0 then open recursively`, () => {
     const { result } = renderHook(() => useGame(testingProps_board_4x4));
 
     act(() => {

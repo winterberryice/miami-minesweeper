@@ -24,3 +24,8 @@ export type Board = Cell[][];
 export interface IBoardCreator {
   createBoard(boardSize: number, mines: number): Board;
 }
+
+export type CellCoords = {
+  row: number;
+  column: number;
+};

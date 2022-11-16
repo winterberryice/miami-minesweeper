@@ -1,11 +1,30 @@
 import React from "react";
-import { Board, Cell, IBoardCreator, Status } from "./types";
+import { Board, Cell, CellCoords, IBoardCreator, Status } from "./types";
 
 export type UseGameProps = {
   boardSize: number;
   mines: number;
   boardCreator: IBoardCreator;
 };
+
+function getNewBoard(
+  board: Board,
+  coords: CellCoords,
+  callback: (cell: Cell) => Cell
+): Board {
+  return board.map((row) =>
+    row.map((cell) => {
+      if (cell.column === coords.column && cell.row === coords.row) {
+        return callback(cell);
+      }
+      return cell;
+    })
+  );
+}
+
+function copyBoard(board: Board): Board {
+  return board.map((row) => row.map((cell) => ({ ...cell })));
+}
 
 export function useGame({ boardCreator, boardSize, mines }: UseGameProps) {
   const [board, setBoard] = React.useState<Board>([]);
@@ -18,7 +37,36 @@ export function useGame({ boardCreator, boardSize, mines }: UseGameProps) {
     setBoard(boardCreator.createBoard(boardSize, mines));
   }
 
-  function onCellClick() {}
+  function onCellClick(cellCoords: CellCoords) {
+    const draftBoard = copyBoard(board);
+    cellClickAction(cellCoords);
+    setBoard(draftBoard);
+
+    function cellClickAction({ row, column }: CellCoords) {
+      const cell = draftBoard[row][column];
+
+      if (cell.status !== Status.DEFAULT) {
+        return;
+      }
+
+      cell.status = Status.OPEN;
+
+      if (cell.proximityMines === 0) {
+        PEERS.forEach((peer) => {
+          const peerRow = row + peer.row;
+          const peerColumn = column + peer.column;
+
+          if (draftBoard[peerRow] && draftBoard[peerRow][peerColumn]) {
+            cellClickAction({
+              row: peerRow,
+              column: peerColumn,
+            });
+          }
+        });
+      }
+    }
+  }
+
   function onFlagClick() {}
 
   return {
