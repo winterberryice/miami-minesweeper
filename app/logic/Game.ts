@@ -67,7 +67,22 @@ export function useGame({ boardCreator, boardSize, mines }: UseGameProps) {
     }
   }
 
-  function onFlagClick() {}
+  function onFlagClick({ row, column }: CellCoords) {
+    let cell = board[row][column];
+
+    if (cell.status === Status.DEFAULT || cell.status === Status.FLAG) {
+      const draftBoard = copyBoard(board);
+      cell = draftBoard[row][column];
+
+      if (cell.status === Status.DEFAULT) {
+        cell.status = Status.FLAG;
+      } else if (cell.status === Status.FLAG) {
+        cell.status = Status.DEFAULT;
+      }
+
+      setBoard(draftBoard);
+    }
+  }
 
   return {
     board,

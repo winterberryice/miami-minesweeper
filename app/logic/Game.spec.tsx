@@ -38,4 +38,32 @@ describe("Game", () => {
     expect(openedCells.length).toBe(12);
     expect(openedCells.every((cell) => cell.status === Status.OPEN)).toBe(true);
   });
+
+  test("should show flag when right clicked", () => {
+    const { result } = renderHook(() => useGame(testingProps_board_4x4));
+
+    const flaggedCellsCount = function () {
+      return result.current.board
+        .flatMap((item) => item)
+        .filter((cell) => cell.status === Status.FLAG).length;
+    };
+
+    act(() => {
+      result.current.onFlagClick({ row: 2, column: 3 });
+    });
+
+    expect(flaggedCellsCount()).toBe(1);
+
+    act(() => {
+      result.current.onFlagClick({ row: 2, column: 2 });
+    });
+
+    expect(flaggedCellsCount()).toBe(2);
+
+    act(() => {
+      result.current.onFlagClick({ row: 2, column: 2 });
+    });
+
+    expect(flaggedCellsCount()).toBe(1);
+  });
 });
