@@ -66,4 +66,11 @@ describe("Game", () => {
 
     expect(flaggedCellsCount()).toBe(1);
   });
+
+  test("should allow double click", () => {
+    const { result } = renderHook(() => useGame(testingProps_board_4x4));
+    act(() => {
+      //result.current.onFlagClick({ row: 2, column: 3 });
+    });
+  });
 });
