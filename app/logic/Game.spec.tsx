@@ -69,8 +69,23 @@ describe("Game", () => {
 
   test("should allow double click", () => {
     const { result } = renderHook(() => useGame(testingProps_board_4x4));
+
     act(() => {
-      //result.current.onFlagClick({ row: 2, column: 3 });
+      result.current.onCellClick({ row: 2, column: 2 });
     });
+    act(() => {
+      result.current.onFlagClick({ row: 1, column: 1 });
+    });
+    act(() => {
+      result.current.onDoubleClick({ row: 2, column: 2 });
+    });
+
+    const openedCells = result.current.board
+      .flatMap((item) => item)
+      .filter((cell) => {
+        return cell.status === Status.OPEN;
+      });
+
+    expect(openedCells.length).toBe(12);
   });
 });

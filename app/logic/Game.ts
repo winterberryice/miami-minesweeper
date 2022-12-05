@@ -84,11 +84,75 @@ export function useGame({ boardCreator, boardSize, mines }: UseGameProps) {
     }
   }
 
+  function onDoubleClick({ row, column }: CellCoords) {
+    const draftBoard = copyBoard(board);
+    const targetCell = board[row][column];
+    const peerFlagCount = getPeerFlagCount();
+
+    if (targetCell.proximityMines === peerFlagCount) {
+      PEERS.forEach((peer) => {
+        const peerRow = row + peer.row;
+        const peerColumn = column + peer.column;
+
+        if (draftBoard[peerRow] && draftBoard[peerRow][peerColumn]) {
+          cellClickAction({
+            row: peerRow,
+            column: peerColumn,
+          });
+        }
+      });
+
+      setBoard(draftBoard);
+    }
+
+    function getPeerFlagCount() {
+      let flagCount = 0;
+
+      PEERS.forEach((peer) => {
+        const peerRow = row + peer.row;
+        const peerColumn = column + peer.column;
+
+        const peerCell = draftBoard[peerRow][peerColumn];
+
+        if (peerCell && peerCell.status === Status.FLAG) {
+          flagCount++;
+        }
+      });
+
+      return flagCount;
+    }
+
+    function cellClickAction({ row, column }: CellCoords) {
+      const cell = draftBoard[row][column];
+
+      if (cell.status !== Status.DEFAULT) {
+        return;
+      }
+
+      cell.status = Status.OPEN;
+
+      if (cell.proximityMines === 0) {
+        PEERS.forEach((peer) => {
+          const peerRow = row + peer.row;
+          const peerColumn = column + peer.column;
+
+          if (draftBoard[peerRow] && draftBoard[peerRow][peerColumn]) {
+            cellClickAction({
+              row: peerRow,
+              column: peerColumn,
+            });
+          }
+        });
+      }
+    }
+  }
+
   return {
     board,
     start,
     onCellClick,
     onFlagClick,
+    onDoubleClick,
   };
 }
 
