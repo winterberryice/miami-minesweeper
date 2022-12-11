@@ -191,7 +191,7 @@ const PEERS = [
   { row: 0, column: -1 },
 ];
 
-class GameBoardCreator implements IBoardCreator {
+export class GameBoardCreator implements IBoardCreator {
   public createBoard(boardSize: number, mines: number): Board {
     const board: Board = [];
 
