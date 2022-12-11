@@ -88,4 +88,17 @@ describe("Game", () => {
 
     expect(openedCells.length).toBe(12);
   });
+
+  test("should end game when mine is clicked", () => {
+    const { result } = renderHook(() => useGame(testingProps_board_4x4));
+
+    act(() => {
+      result.current.onCellClick({ row: 1, column: 1 });
+    });
+
+    const gameState = result.current.gameState;
+
+    expect(gameState).toBeDefined();
+    expect(gameState.gameOver).toBe(true);
+  });
 });

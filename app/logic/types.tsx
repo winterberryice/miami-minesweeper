@@ -29,3 +29,7 @@ export type CellCoords = {
   row: number;
   column: number;
 };
+
+export type GameState =
+  | { gameOver: false }
+  | { gameOver: true; gameEndingCell: CellCoords };

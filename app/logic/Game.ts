@@ -1,5 +1,12 @@
 import React from "react";
-import { Board, Cell, CellCoords, IBoardCreator, Status } from "./types";
+import {
+  Board,
+  Cell,
+  CellCoords,
+  GameState,
+  IBoardCreator,
+  Status,
+} from "./types";
 
 export type UseGameProps = {
   boardSize: number;
@@ -26,15 +33,24 @@ function copyBoard(board: Board): Board {
   return board.map((row) => row.map((cell) => ({ ...cell })));
 }
 
+const initialGameState: GameState = {
+  gameOver: false,
+};
+
 export function useGame({ boardCreator, boardSize, mines }: UseGameProps) {
   const [board, setBoard] = React.useState<Board>([]);
+  const [gameState, setGameState] = React.useState<GameState>({
+    ...initialGameState,
+  });
 
   React.useEffect(() => {
     setBoard(boardCreator.createBoard(boardSize, mines));
+    setGameState({ ...initialGameState });
   }, [boardCreator, boardSize, mines]);
 
   function start() {
     setBoard(boardCreator.createBoard(boardSize, mines));
+    setGameState({ ...initialGameState });
   }
 
   function onCellClick(cellCoords: CellCoords) {
@@ -50,6 +66,13 @@ export function useGame({ boardCreator, boardSize, mines }: UseGameProps) {
       }
 
       cell.status = Status.OPEN;
+
+      if (cell.mine) {
+        setGameState({
+          gameOver: true,
+          gameEndingCell: cellCoords,
+        });
+      }
 
       if (cell.proximityMines === 0) {
         PEERS.forEach((peer) => {
@@ -148,6 +171,7 @@ export function useGame({ boardCreator, boardSize, mines }: UseGameProps) {
   }
 
   return {
+    gameState,
     board,
     start,
     onCellClick,
